@@ -15,8 +15,8 @@ Attualmente supporta le seguenti tipologie di campi:
 |:---|---:|
 |@autore|Giorgio Suadoni|
 |@versione|0.18|
+|@data ultimo aggiornamento|7 Giugno 2017|
 |@data prima versione|20 Maggio 2017|
-|@data prima aggiornamento|7 Giugno 2017|
 
 &nbsp;
 ### CHANGELOG
