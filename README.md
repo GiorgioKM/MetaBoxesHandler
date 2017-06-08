@@ -1,6 +1,8 @@
 MetaBoxesHandler
 ================
 
+[![Build Status](https://img.shields.io/badge/build-v0.18-green.svg?style=flat)]
+
 È un utility per Wordpress per la gestione automatizzata di metabox da utilizzare con un custom post type, sia lato backend che frontend.
 
 Attualmente supporta le seguenti tipologie di campi:
