@@ -1,4 +1,6 @@
-# MetaBoxesHandler
+MetaBoxesHandler
+================
+
 È un utility per Wordpress per la gestione automatizzata di metabox da utilizzare con un custom post type, sia lato backend che frontend.
 
 Attualmente supporta le seguenti tipologie di campi:
@@ -9,7 +11,10 @@ Attualmente supporta le seguenti tipologie di campi:
 * select e select optiongroup
 * campi con html personalizzato
 
-&nbsp;
+
+
+Crediti
+-------
 
 |Tipo|Descrizione|
 |:---|---:|
@@ -18,8 +23,9 @@ Attualmente supporta le seguenti tipologie di campi:
 |@data ultimo aggiornamento|7 Giugno 2017|
 |@data prima versione|20 Maggio 2017|
 
-&nbsp;
-### CHANGELOG
+
+
+Changelog
 ---------
 
 #### [7 Giugno 2017] versione 0.18
@@ -50,7 +56,9 @@ Attualmente supporta le seguenti tipologie di campi:
 #### [20 Maggio 2017] versione 0.1
 * Prima release
 
-&nbsp;
-### LINK UTILI
----------
+
+
+Link utili
+----------
+
 * [Wiki di MetaBoxesHandler](https://github.com/GiorgioKM/MetaBoxesHandler/wiki)
