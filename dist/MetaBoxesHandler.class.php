@@ -14,9 +14,9 @@
  * - select e select optiongroup
  * - campi con html personalizzato
  * 
- * @versione                        0.18
+ * @versione                        0.18.1
  * @data prima versione             20 Maggio 2017
- * @data ultimo aggiornamento       7 Giugno 2017
+ * @data ultimo aggiornamento       12 Giugno 2017
  * 
  * @autore                          Giorgio Suadoni
  * 
@@ -73,7 +73,7 @@ $mbh->add('Generali', array(
 		// Facoltativo (default: false). True: salverà il postmeta in un record separato dagli altri
 		'save-unique' => bool,
 		
-		// Facoltativo (default: false). True: rimuoverà tutti i tag HTML dal contenuto del campo
+		// Facoltativo (default: false). True: manterrà tutti i tag HTML nel contenuto del campo
 		'allow-html' => bool,
 		
 		// Obbligatorio se il tipo di campo è custom-html. Funzione anonima da eseguire.
@@ -359,6 +359,7 @@ class MetaBoxesHandler extends BaseMBH {
 	/**
 	 * Aggiunge il supporto per l'immagine in evidenza (nativa di Wordpress)
 	 *
+	 * @aggiornamento v0.18.1
 	 * @dalla v0.15
 	 *
 	 * @accesso   pubblico
@@ -400,6 +401,11 @@ class MetaBoxesHandler extends BaseMBH {
 		});
 		
 		add_filter('admin_post_thumbnail_html', function($content) use($description) {
+			global $post;
+			
+			if ($post->post_type == $this->postType)
+				return $content;
+			
 			if (!$this->isFeaturedAdded)
 				return $content;
 			

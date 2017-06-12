@@ -1,6 +1,9 @@
-MetaBoxesHandler
+﻿MetaBoxesHandler
 
 === CHANGELOG ===
+
+[12 Giugno 2017] versione 0.18.1
+- Risolto un problema con il metodo 'setFeatureSupport()'
 
 [7 Giugno 2017] versione 0.18
 - Classe rinominata in 'MetaBoxesHandler'
