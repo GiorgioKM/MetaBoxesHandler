@@ -403,7 +403,7 @@ class MetaBoxesHandler extends BaseMBH {
 		add_filter('admin_post_thumbnail_html', function($content) use($description) {
 			global $post;
 			
-			if ($post->post_type == $this->postType)
+			if ($post->post_type != $this->postType)
 				return $content;
 			
 			if (!$this->isFeaturedAdded)
