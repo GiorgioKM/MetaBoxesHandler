@@ -1,6 +1,6 @@
 ﻿Changelog
 =========
-
+ 
 #### v0.19 - 14 Giugno 2017
 * Aggiuno nuovo campo checkbox (è possibile inserire più checkbox in un unico campo)
 
