@@ -1,6 +1,9 @@
 ﻿Changelog
 =========
- 
+
+#### v0.19.1 - 14 Giugno 2017
+* Aggiunto un parametro di tipo booleano nel metodo 'returnAllMeta($includeAllPosts = false)'. Se impostato a true, forzerà il metodo a ritornare con tutti i post
+
 #### v0.19 - 14 Giugno 2017
 * Aggiuno nuovo campo checkbox (è possibile inserire più checkbox in un unico campo)
 

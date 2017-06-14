@@ -276,14 +276,14 @@ class MetaBoxesHandler extends BaseMBH {
 	/**
 	 * Solo lato frontend: ritorna un array con tutti i postmeta e i loro valori salvati precedentemente.
 	 *
-	 * @aggiornamento v0.16
+	 * @aggiornamento v0.19.1
 	 * @dalla v0.1
 	 *
 	 * @accesso   pubblico
 	 * @ritorno   array
 	 */
-	public function returnAllMeta() {
+	public function returnAllMeta($includeAllPosts = false) {
 		if (!is_admin())
-			return parent::_getPostMetaAsArrays();
+			return parent::_getPostMetaAsArrays($includeAllPosts);
 	}
 }

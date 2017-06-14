@@ -1,7 +1,7 @@
 MetaBoxesHandler
 ================
 
-![Build Status](https://img.shields.io/badge/build-v0.19-green.svg?style=flat)
+![Build Status](https://img.shields.io/badge/build-v0.19.1-green.svg?style=flat)
 
 È un utility per Wordpress per la gestione automatizzata di metabox da utilizzare con un custom post type, sia lato backend che frontend.
 
@@ -22,7 +22,7 @@ Crediti
 |Tipo|Descrizione|
 |:---|---:|
 |@autore|Giorgio Suadoni|
-|@versione|0.19|
+|@versione|0.19.1|
 |@data ultimo aggiornamento|14 Giugno 2017|
 |@data prima versione|20 Maggio 2017|
 
@@ -30,6 +30,9 @@ Crediti
 
 Changelog
 ---------
+
+#### v0.19.1 - 14 Giugno 2017
+* Aggiunto un parametro di tipo booleano nel metodo 'returnAllMeta($includeAllPosts = false)'. Se impostato a true, forzerà il metodo a ritornare con tutti i post
 
 #### v0.19 - 14 Giugno 2017
 * Aggiuno nuovo campo checkbox (è possibile inserire più checkbox in un unico campo)

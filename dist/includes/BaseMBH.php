@@ -16,7 +16,7 @@ abstract class BaseMBH {
 	 *
 	 * @accesso   pubblico
 	 */
-	abstract public function returnAllMeta();
+	abstract public function returnAllMeta($includeAllPosts);
 	
 	/**
 	 * Variabile dove verrà salvata la lingua utilizzata dal pannello Admin di Wordpress.
@@ -166,15 +166,16 @@ abstract class BaseMBH {
 	 * Ritorna un array con tutti i postmeta e i loro valori salvati precedentemente su DB.
 	 *
 	 * Se l'oggetto post è vuoto o non corrisponde al custom post type impostato dalla classe, ritornerà un array multidimensionale
-	 * che come chiave avrà l'ID del post
+	 * che come chiave avrà l'ID del post.
 	 *
-	 * @aggiornamento v0.14
+	 * @aggiornamento v0.19.1 Aggiunto parametro $includeAllPosts per forzare il ritorno con tutti i post
 	 * @dalla v0.1
 	 *
 	 * @accesso   protetto
+	 * @parametro bool $includeAllPosts Facoltativo. Forza il ritorna con tutti i post.
 	 * @ritorno   array
 	 */
-	protected function _getPostMetaAsArrays() {
+	protected function _getPostMetaAsArrays($includeAllPosts = false) {
 		global $post;
 		
 		$this->_generalCheck();
@@ -199,7 +200,7 @@ abstract class BaseMBH {
 			});
 		};
 		
-		if (!$post || get_post_type($post) != $this->postType) {
+		if (!$post || get_post_type($post) != $this->postType || $includeAllPosts) {
 			$args = array(
 				'posts_per_page'   => -1,
 				'orderby'          => 'date',
