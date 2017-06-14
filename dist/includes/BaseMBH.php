@@ -150,7 +150,6 @@ abstract class BaseMBH {
 	 * Aggiunge l'azione di salvataggio del post.
 	 *
 	 * @aggiornamento v0.18 E' stata riscritta per essere richiamata più volte
-	 * @aggiornamento v0.14
 	 * @dalla v0.1
 	 *
 	 * @accesso protetto
@@ -428,6 +427,7 @@ abstract class BaseMBH {
 	 */
 	private function _getPostMetaFromDB($post) {
 		$loadMeta = get_post_meta($post->ID, $this->postType, true);
+		
 		$meta = array();
 		
 		$args = $this->_processFieldSettings(function($settings, $args) use($loadMeta, $post) {
@@ -460,7 +460,6 @@ abstract class BaseMBH {
 	 * Costruisce la tabella con tutti i postmeta.
 	 *
 	 * @aggiornamento v0.18 Aggiunto parametro $fields e il metodo è diventato privato
-	 * @aggiornamento v0.13
 	 * @dalla v0.1
 	 *
 	 * @accesso   privato
@@ -483,9 +482,9 @@ abstract class BaseMBH {
 		foreach ($fields as $settings) {
 			$postMetas = $settings['name'];
 			
-			if (!is_array($postMetas) && $settings['type'] != 'custom-html')
+			if (!is_array($postMetas) && $settings['type'] != 'custom-html' && $settings['type'] != 'checkbox')
 				$contentPostMeta = (isset($metaFromDB[$postMetas]) ? $metaFromDB[$postMetas] : '');
-			elseif (is_array($postMetas) && $settings['type'] == 'custom-html') {
+			elseif (is_array($postMetas) && ($settings['type'] == 'custom-html' || $settings['type'] == 'checkbox')) {
 				$contentPostMeta = array();
 				
 				foreach ($postMetas as $namePostMeta) {
@@ -611,7 +610,7 @@ abstract class BaseMBH {
 	/**
 	 * Genera una riga singola di tabella con il postmeta e il suo valore salvato precedentemente.
 	 *
-	 * @aggiornamento v0.14
+	 * @aggiornamento v0.19 Aggiunto il campo checkbox
 	 * @dalla v0.1
 	 *
 	 * @accesso   privato
@@ -721,6 +720,25 @@ abstract class BaseMBH {
 				}
 				
 				break;
+			case 'checkbox':
+				if (!isset($settings['list-checkbox']))
+					break;
+				
+				return '
+				<tr>
+					<th>
+						<label>'. $settings['label'] . ($requiredField ? $requiredField : '') .'</label>
+					</th>
+					<td>
+						<fieldset>
+							'. $this->_generateListCheckboxAsHTML($settings['list-checkbox'], (isset($contentPostMeta) ? $contentPostMeta : '')) .'
+							'. (isset($settings['help-description']) && $settings['help-description'] ? '<p class="description">'. $settings['help-description'] .'</p>' : '') .'
+						</fieldset>
+					</td>
+				</tr>
+				';
+				
+				break;
 		}
 	}
 	
@@ -763,6 +781,41 @@ abstract class BaseMBH {
 			}
 			
 			return $options;
+		}
+	}
+	
+	/**
+	 * Genera una lista di checkbox e ritorna il contenuto HTML.
+	 *
+	 * @dalla v0.19
+	 *
+	 * @accesso   privato
+	 * @parametro array  $array    Obbligatorio. Lista delle opzioni.
+	 * @parametro array  $defaults Facoltativo. Il valore predefinito da selezionare nella checkbox.
+	 * @ritorno   string Ritorna il contenuto codice HTML.
+	 */
+	private function _generateListCheckboxAsHTML($array, $defaults = array()) {
+		if (is_array($array) && count($array)) {
+			$cb = '';
+			
+			foreach ($array as $key => $data) {
+				$default = array_search($key, array_keys($defaults));
+				
+				if ($default !== false && $defaults[$key] == current($data))
+					$checked = ' checked';
+				else
+					$checked = '';
+				
+				$cb .= '
+				<label>
+					<input name="field_'. $key .'" value="'. current($data) .'" type="checkbox"'. $checked .'>
+					'. key($data) .'
+				</label>
+				<br>
+				';
+			}
+			
+			return $cb;
 		}
 	}
 	
