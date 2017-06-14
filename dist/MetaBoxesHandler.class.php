@@ -6,7 +6,7 @@
  * 
  * È un utility per Wordpress per la gestione automatizzata di metabox da utilizzare con un custom post type, sia lato backend che frontend.
  * 
- * @versione                        0.19
+ * @versione                        0.19.1
  * @data prima versione             20 Maggio 2017
  * @data ultimo aggiornamento       14 Giugno 2017
  * 
