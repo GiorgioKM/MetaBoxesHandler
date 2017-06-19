@@ -934,7 +934,7 @@ abstract class BaseMBH {
 	 * @accesso privato
 	 */
 	private function loadTranslations() {
-		require_once('translations.php');
+		include 'translations.php';
 		
 		$this->listTranslations = $translations;
 	}

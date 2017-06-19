@@ -1,6 +1,9 @@
 ﻿Changelog
 =========
 
+#### v0.19.12 - 19 Giugno 2017
+* Risolto un problema quando la classe veniva instanziata più di una volta
+
 #### v0.19.1 - 14 Giugno 2017
 * Aggiunto un parametro di tipo booleano nel metodo 'returnAllMeta($includeAllPosts = false)'. Se impostato a true, forzerà il metodo a ritornare con tutti i post
 
