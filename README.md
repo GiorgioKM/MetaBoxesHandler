@@ -33,7 +33,7 @@ Changelog
 ---------
 
 #### v0.20 - 20 Giugno 2017
-* Aggiuno nuovo campo input radio (è possibile inserire più radio in un unico campo)
+* Aggiunto nuovo campo input radio (è possibile inserire più radio in un unico campo)
 * Piccole correzioni al codice
 
 #### v0.19.12 - 19 Giugno 2017
@@ -43,7 +43,7 @@ Changelog
 * Aggiunto un parametro di tipo booleano nel metodo 'returnAllMeta($includeAllPosts = false)'. Se impostato a true, forzerà il metodo a ritornare con tutti i post
 
 #### v0.19 - 14 Giugno 2017
-* Aggiuno nuovo campo input checkbox (è possibile inserire più checkbox in un unico campo)
+* Aggiunto nuovo campo input checkbox (è possibile inserire più checkbox in un unico campo)
 
 #### v0.18.1 - 12 Giugno 2017
 * Risolto un problema con il metodo 'setFeatureSupport()'
