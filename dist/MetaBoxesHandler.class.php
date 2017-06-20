@@ -6,8 +6,8 @@
  * 
  * È un utility per Wordpress per la gestione automatizzata di metabox da utilizzare con un custom post type, sia lato backend che frontend.
  * 
- * @versione                        0.19.12
- * @data ultimo aggiornamento       19 Giugno 2017
+ * @versione                        0.20
+ * @data ultimo aggiornamento       20 Giugno 2017
  * @data prima versione             20 Maggio 2017
  * 
  * @autore                          Giorgio Suadoni
@@ -105,6 +105,7 @@ class MetaBoxesHandler extends BaseMBH {
 	/**
 	 * Costruttore.
 	 *
+	 * @aggiornamento v0.19.12 Controllo che gli script o stili non vengono caricati più di una volta
 	 * @dalla v0.1
 	 *
 	 * @accesso pubblico

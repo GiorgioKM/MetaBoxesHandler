@@ -1,7 +1,7 @@
 MetaBoxesHandler
 ================
 
-![Build Status](https://img.shields.io/badge/build-v0.19.12-green.svg?style=flat)
+![Build Status](https://img.shields.io/badge/build-v0.20-green.svg?style=flat)
 
 È un utility per Wordpress per la gestione automatizzata di metabox da utilizzare con un custom post type, sia lato backend che frontend.
 
@@ -12,7 +12,8 @@ Attualmente supporta le seguenti tipologie di campi:
 * upload di immagini utilizzando le funzioni native di wordpress
 * select e select optiongroup
 * campi con html personalizzato
-* lista di checkbox
+* lista di input checkbox
+* lista di input radio
 
 
 
@@ -22,14 +23,18 @@ Crediti
 |Tipo|Descrizione|
 |:---|---:|
 |@autore|Giorgio Suadoni|
-|@versione|0.19.12|
-|@data ultimo aggiornamento|19 Giugno 2017|
+|@versione|0.20|
+|@data ultimo aggiornamento|20 Giugno 2017|
 |@data prima versione|20 Maggio 2017|
 
 
 
 Changelog
 ---------
+
+#### v0.20 - 20 Giugno 2017
+* Aggiuno nuovo campo input radio (è possibile inserire più radio in un unico campo)
+* Piccole correzioni al codice
 
 #### v0.19.12 - 19 Giugno 2017
 * Risolto un problema quando la classe veniva instanziata più di una volta
@@ -38,7 +43,7 @@ Changelog
 * Aggiunto un parametro di tipo booleano nel metodo 'returnAllMeta($includeAllPosts = false)'. Se impostato a true, forzerà il metodo a ritornare con tutti i post
 
 #### v0.19 - 14 Giugno 2017
-* Aggiuno nuovo campo checkbox (è possibile inserire più checkbox in un unico campo)
+* Aggiuno nuovo campo input checkbox (è possibile inserire più checkbox in un unico campo)
 
 #### v0.18.1 - 12 Giugno 2017
 * Risolto un problema con il metodo 'setFeatureSupport()'

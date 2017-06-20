@@ -62,6 +62,16 @@ abstract class BaseMBH {
 	private $adminNotes;
 	
 	/**
+	 * Costante dove viene memorizzato il prefisso iniziale del campo usato nel metodo HTTP POST.
+	 *
+	 * @dalla v0.20
+	 *
+	 * @accesso pubblico
+	 * @var     string
+	 */
+	const PREFIX_POST_FIELD = 'mbh_field_';
+	
+	/**
 	 * Costruttore.
 	 *
 	 * @aggiornamento v0.14
@@ -115,7 +125,7 @@ abstract class BaseMBH {
 				}
 				
 				foreach ($postMetas as $namePostMeta) {
-					$valueFieldFromPOST = $__POST['field_'. $namePostMeta];
+					$valueFieldFromPOST = $__POST[self::PREFIX_POST_FIELD . $namePostMeta];
 					
 					if (count($postMetas) == 1) {
 						if ($settings['type'] == 'input' || $settings['type'] == 'textarea') {
@@ -348,7 +358,7 @@ abstract class BaseMBH {
 						<a class="button" data-action="detach-media" data-target="#h_'. $imageTagID .'" data-preview="#'. $imageTagID .'"'. ($image ? '' : ' style="display: none;"') .'>'. $this->_getTranslate('remove_image') .'</a>
 					</p>
 					'. (isset($settings['help-description']) && $settings['help-description'] ? '<p>'. $settings['help-description'] .'</p>' : '') .'
-					<input type="hidden" value="'. ($image ? $metaFromDB[$settings['name']] : '').'" id="h_'. $imageTagID .'" name="field_'. $settings['name'] .'">
+					<input type="hidden" value="'. ($image ? $metaFromDB[$settings['name']] : '').'" id="h_'. $imageTagID .'" name="'. self::PREFIX_POST_FIELD . $settings['name'] .'">
 					';
 				}, $this->postType, 'side');
 			}
@@ -611,7 +621,7 @@ abstract class BaseMBH {
 	/**
 	 * Genera una riga singola di tabella con il postmeta e il suo valore salvato precedentemente.
 	 *
-	 * @aggiornamento v0.19 Aggiunto il campo checkbox
+	 * @aggiornamento v0.20 Aggiunto il campo radio
 	 * @dalla v0.1
 	 *
 	 * @accesso   privato
@@ -638,10 +648,10 @@ abstract class BaseMBH {
 				return '
 				<tr>
 					<th>
-						<label for="field_'. $namePostMeta .'">'. $settings['label'] . ($requiredField ? $requiredField : '') .'</label>
+						<label for="'. self::PREFIX_POST_FIELD . $namePostMeta .'">'. $settings['label'] . ($requiredField ? $requiredField : '') .'</label>
 					</th>
 					<td>
-						<input type="text" name="field_'. $namePostMeta .'" id="field_'. $namePostMeta .'" autocomplete="off" value="'. esc_attr((isset($contentPostMeta) ? $contentPostMeta : '')) .'" '. implode(' ', $attrs) .'>
+						<input type="text" name="'. self::PREFIX_POST_FIELD . $namePostMeta .'" id="'. self::PREFIX_POST_FIELD . $namePostMeta .'" autocomplete="off" value="'. esc_attr((isset($contentPostMeta) ? $contentPostMeta : '')) .'" '. implode(' ', $attrs) .'>
 						'. (isset($settings['help-description']) && $settings['help-description'] ? '<p class="description">'. $settings['help-description'] .'</p>' : '') .'
 					</td>
 				</tr>
@@ -652,10 +662,10 @@ abstract class BaseMBH {
 				return '
 				<tr>
 					<th>
-						<label for="field_'. $namePostMeta .'">'. $settings['label'] . ($requiredField ? $requiredField : '') .'</label>
+						<label for="'. self::PREFIX_POST_FIELD . $namePostMeta .'">'. $settings['label'] . ($requiredField ? $requiredField : '') .'</label>
 					</th>
 					<td>
-						<textarea name="field_'. $namePostMeta .'" id="field_'. $namePostMeta .'" '. implode(' ', $attrs) .'>'. (isset($contentPostMeta) ? $contentPostMeta : '') .'</textarea>
+						<textarea name="'. self::PREFIX_POST_FIELD . $namePostMeta .'" id="'. self::PREFIX_POST_FIELD . $namePostMeta .'" '. implode(' ', $attrs) .'>'. (isset($contentPostMeta) ? $contentPostMeta : '') .'</textarea>
 						'. (isset($settings['help-description']) && $settings['help-description'] ? '<p class="description">'. $settings['help-description'] .'</p>' : '') .'
 					</td>
 				</tr>
@@ -672,7 +682,7 @@ abstract class BaseMBH {
 						</noscript>
 					</th>
 					<td>
-						<input type="text" name="field_'. $namePostMeta .'" class="large-text" autocomplete="off" value="'. (isset($contentPostMeta) ? $contentPostMeta : '') .'">
+						<input type="text" name="'. self::PREFIX_POST_FIELD . $namePostMeta .'" class="large-text" autocomplete="off" value="'. (isset($contentPostMeta) ? $contentPostMeta : '') .'">
 						'. (isset($settings['help-description']) && $settings['help-description'] ? '<p class="description">'. $settings['help-description'] .'</p>' : '') .'
 					</td>
 				</tr>
@@ -686,10 +696,10 @@ abstract class BaseMBH {
 				return '
 				<tr>
 					<th>
-						<label for="field_'. $namePostMeta .'">'. $settings['label'] . ($requiredField ? $requiredField : '') .'</label>
+						<label for="'. self::PREFIX_POST_FIELD . $namePostMeta .'">'. $settings['label'] . ($requiredField ? $requiredField : '') .'</label>
 					</th>
 					<td>
-						<select name="field_'. $namePostMeta .'" id="field_'. $namePostMeta .'">
+						<select name="'. self::PREFIX_POST_FIELD . $namePostMeta .'" id="'. self::PREFIX_POST_FIELD . $namePostMeta .'">
 							'. $this->_generateSelectOptionAsHTML($settings['select-options'], (isset($contentPostMeta) ? $contentPostMeta : '')) .'
 						</select>
 						'. (isset($settings['help-description']) && $settings['help-description'] ? '<p class="description">'. $settings['help-description'] .'</p>' : '') .'
@@ -705,7 +715,7 @@ abstract class BaseMBH {
 					$fields = array();
 					
 					foreach ($postMetas as $nameMeta) {
-						$fields[$nameMeta] = 'field_'. $nameMeta;
+						$fields[$nameMeta] = self::PREFIX_POST_FIELD . $nameMeta;
 					}
 					
 					return '
@@ -728,11 +738,30 @@ abstract class BaseMBH {
 				return '
 				<tr>
 					<th>
-						<label>'. $settings['label'] . ($requiredField ? $requiredField : '') .'</label>
+						<label>'. $settings['label'] .'</label>
 					</th>
 					<td>
 						<fieldset>
 							'. $this->_generateListCheckboxAsHTML($settings['list-checkbox'], (isset($contentPostMeta) ? $contentPostMeta : '')) .'
+							'. (isset($settings['help-description']) && $settings['help-description'] ? '<p class="description">'. $settings['help-description'] .'</p>' : '') .'
+						</fieldset>
+					</td>
+				</tr>
+				';
+				
+				break;
+			case 'radio':
+				if (!isset($settings['list-radio']))
+					break;
+				
+				return '
+				<tr>
+					<th>
+						<label>'. $settings['label'] . ($requiredField ? $requiredField : '') .'</label>
+					</th>
+					<td>
+						<fieldset>
+							'. $this->_generateListRadioAsHTML($namePostMeta, $settings['list-radio'], (isset($contentPostMeta) ? $contentPostMeta : '')) .'
 							'. (isset($settings['help-description']) && $settings['help-description'] ? '<p class="description">'. $settings['help-description'] .'</p>' : '') .'
 						</fieldset>
 					</td>
@@ -797,7 +826,7 @@ abstract class BaseMBH {
 	 */
 	private function _generateListCheckboxAsHTML($array, $defaults = array()) {
 		if (is_array($array) && count($array)) {
-			$cb = '';
+			$output = '';
 			
 			foreach ($array as $key => $data) {
 				$default = array_search($key, array_keys($defaults));
@@ -807,16 +836,45 @@ abstract class BaseMBH {
 				else
 					$checked = '';
 				
-				$cb .= '
+				$output .= '
 				<label>
-					<input name="field_'. $key .'" value="'. current($data) .'" type="checkbox"'. $checked .'>
+					<input name="'. self::PREFIX_POST_FIELD . $key .'" value="'. current($data) .'" type="checkbox"'. $checked .'>
 					'. key($data) .'
 				</label>
 				<br>
 				';
 			}
 			
-			return $cb;
+			return $output;
+		}
+	}
+	
+	/**
+	 * Genera una lista di radio e ritorna il contenuto HTML.
+	 *
+	 * @dalla v0.20
+	 *
+	 * @accesso   privato
+	 * @parametro string $namePostMeta Obbligatorio. Nome del postmeta.
+	 * @parametro array  $array        Obbligatorio. Lista delle opzioni.
+	 * @parametro string $default      Facoltativo. Il valore predefinito da selezionare nella radio.
+	 * @ritorno   string Ritorna il contenuto codice HTML.
+	 */
+	private function _generateListRadioAsHTML($namePostMeta, $array, $default = '') {
+		if (is_array($array) && count($array)) {
+			$output = '';
+			
+			foreach ($array as $data) {
+				$output .= '
+				<label>
+					<input name="'. self::PREFIX_POST_FIELD . $namePostMeta .'" value="'. current($data) .'" type="radio"'. ($default == current($data) ? ' checked' : '') .'>
+					'. key($data) .'
+				</label>
+				<br>
+				';
+			}
+			
+			return $output;
 		}
 	}
 	
@@ -914,7 +972,7 @@ abstract class BaseMBH {
 			foreach ($fieldRequired as $k => $data) {
 				$namePostMeta = $data['name'];
 				
-				if (isset($__POSTS['field_'. $namePostMeta]) && $__POSTS['field_'. $namePostMeta])
+				if (isset($__POSTS[self::PREFIX_POST_FIELD . $namePostMeta]) && $__POSTS[self::PREFIX_POST_FIELD . $namePostMeta])
 					unset($cloneFieldRequired[$k]);
 			}
 			
