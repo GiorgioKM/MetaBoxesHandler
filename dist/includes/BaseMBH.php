@@ -390,6 +390,52 @@ abstract class BaseMBH {
 		}, $this->postType, 'normal', 'high');
 	}
 	
+	/**
+	 * Ritorna il nome esatto del meta key salvato sul DB
+	 *
+	 * @dalla v0.21
+	 *
+	 * @accesso   protetto
+	 * @parametro string $namePostMeta Obbligatorio. Il nome del campo del Post Meta impostato. Se non viene passato nessun valore, ritorneranno tutti i metakey.
+	 * @ritorno   string|array
+	 */
+	protected function _getMetaKeyFromNamePostMeta($namePostMeta = false) {
+		$args = $this->_processFieldSettings(function($settings, $args) use ($namePostMeta) {
+			$namePostMetaFromSettings = $settings['name'];
+			
+			if (!is_array($namePostMetaFromSettings)) {
+				$tmp = $namePostMetaFromSettings;
+				
+				$namePostMetaFromSettings = array();
+				
+				$namePostMetaFromSettings[] = $tmp;
+			}
+			
+			foreach ($namePostMetaFromSettings as $nPMeta) {
+				if (isset($settings['save-unique']) && $settings['save-unique']) {
+					if ($namePostMeta && $nPMeta == $namePostMeta)
+						$args['single'] = $this->postType .'_'. $nPMeta .'_single';
+					
+					if (!$namePostMeta)
+						$args['all'][$nPMeta] = $this->postType .'_'. $nPMeta .'_single';
+				} else {
+					if ($namePostMeta && $nPMeta == $namePostMeta)
+						$args['single'] = $nPMeta;
+					
+					if (!$namePostMeta)
+						$args['all'][$nPMeta] = $nPMeta;
+				}
+			}
+			
+			return $args;
+		});
+		
+		if (isset($args['single']))
+			return $args['single'];
+		else
+			return $args['all'];
+	}
+	
 	
 	/*################################################################################*/
 	/*## METODI PRIVATI                                                             ##*/
@@ -933,6 +979,7 @@ abstract class BaseMBH {
 	/**
 	 * Ottiene un array di campi obbligatori.
 	 *
+	 * @aggiornamento v0.21
 	 * @dalla v0.14
 	 *
 	 * @accesso   privato
@@ -944,6 +991,7 @@ abstract class BaseMBH {
 				$args['requiredFields'][] = array(
 					'name' => $settings['name'],
 					'label' => $settings['label'],
+					'closure' => (is_callable($settings['required']) ? $settings['required'] : false),
 				);
 			}
 			
@@ -956,6 +1004,7 @@ abstract class BaseMBH {
 	/**
 	 * Controlla che i campi obbligatori siano stati compilati correttamente nel $_POST.
 	 *
+	 * @aggiornamento v0.21
 	 * @dalla v0.14
 	 *
 	 * @accesso   privato
@@ -971,9 +1020,19 @@ abstract class BaseMBH {
 			
 			foreach ($fieldRequired as $k => $data) {
 				$namePostMeta = $data['name'];
+				$closure = $data['closure'];
 				
-				if (isset($__POSTS[self::PREFIX_POST_FIELD . $namePostMeta]) && $__POSTS[self::PREFIX_POST_FIELD . $namePostMeta])
-					unset($cloneFieldRequired[$k]);
+				if (!$closure) {
+					if (isset($__POSTS[self::PREFIX_POST_FIELD . $namePostMeta]) && $__POSTS[self::PREFIX_POST_FIELD . $namePostMeta])
+						unset($cloneFieldRequired[$k]);
+				} else {
+					$returnClosure = $closure($__POSTS[self::PREFIX_POST_FIELD . $namePostMeta]);
+					
+					if (!$returnClosure)
+						unset($cloneFieldRequired[$k]);
+					else
+						$cloneFieldRequired[$k]['message'] = $returnClosure;
+				}
 			}
 			
 			if (is_array($cloneFieldRequired) && count($cloneFieldRequired))

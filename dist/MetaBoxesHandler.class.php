@@ -6,8 +6,8 @@
  * 
  * È un utility per Wordpress per la gestione automatizzata di metabox da utilizzare con un custom post type, sia lato backend che frontend.
  * 
- * @versione                        0.20
- * @data ultimo aggiornamento       20 Giugno 2017
+ * @versione                        0.21
+ * @data ultimo aggiornamento       27 Giugno 2017
  * @data prima versione             20 Maggio 2017
  * 
  * @autore                          Giorgio Suadoni
@@ -281,16 +281,28 @@ class MetaBoxesHandler extends BaseMBH {
 	}
 	
 	/**
-	 * Solo lato frontend: ritorna un array con tutti i postmeta e i loro valori salvati precedentemente.
+	 * Ritorna un array con tutti i postmeta e i loro valori salvati precedentemente.
 	 *
-	 * @aggiornamento v0.19.1
+	 * @aggiornamento v0.21 Ora è possibile eseguire questa richiesta anche lato backend
 	 * @dalla v0.1
 	 *
 	 * @accesso   pubblico
 	 * @ritorno   array
 	 */
 	public function returnAllMeta($includeAllPosts = false) {
-		if (!is_admin())
-			return parent::_getPostMetaAsArrays($includeAllPosts);
+		return parent::_getPostMetaAsArrays($includeAllPosts);
+	}
+	
+	/**
+	 * Ritorna il nome esatto del meta key salvato sul DB
+	 *
+	 * @dalla v0.21
+	 *
+	 * @accesso   pubblico
+	 * @parametro string $namePostMeta Facoltativo. Il nome del campo del Post Meta impostato. Se non viene passato nessun valore, ritorneranno tutti i metakey.
+	 * @ritorno   string|array
+	 */
+	public function getMetaKey($namePostMeta = false) {
+		return parent::_getMetaKeyFromNamePostMeta($namePostMeta);
 	}
 }

@@ -1,6 +1,11 @@
 ﻿Changelog
 =========
 
+#### v0.21 - 27 Giugno 2017
+* Ora il metodo 'returnAllMeta()' è richiamabile anche lato backend
+* Aggiunto nuovo metodo 'getMetaKey($namePostMeta = false)', che ritorna l'esatta metakey salvata sul DB. Se non viene passato nessun valore, ritorneranno tutti i metakey.
+* Modificato il parametro 'required'. Ora è possibile passargli una funzione anonima per il controllo personalizzato del campo. In caso di errore, deve ritornare il messaggio da stampare.
+
 #### v0.20 - 20 Giugno 2017
 * Aggiunto nuovo campo input radio (è possibile inserire più radio in un unico campo)
 * Piccole correzioni al codice

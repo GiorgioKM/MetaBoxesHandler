@@ -55,6 +55,7 @@ class AdminNotes {
 	/**
 	 * Imposta i messaggi di errore da visualizzare in caso di mancata compilazione dei campi obbligatori.
 	 *
+	 * @aggiornamento v0.21
 	 * @dalla v0.14
 	 *
 	 * @accesso   pubblico
@@ -69,10 +70,15 @@ class AdminNotes {
 				$getSettings = array_column($getSettingsErrors, 'setting');
 				
 				if (!in_array('missing-error-'. $data['name'], $getSettings)) {
+					$tmpMsgError = $msgError;
+					
+					if (isset($data['message']) && $data['message'])
+						$tmpMsgError = $data['message'];
+					
 					add_settings_error(
 						'missing-error-'. $data['name'],
 						'missing-error-'. $data['name'],
-						sprintf($msgError, $data['label']),
+						sprintf($tmpMsgError, $data['label']),
 						'error'
 					);
 				}

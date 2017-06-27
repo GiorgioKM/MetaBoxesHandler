@@ -1,7 +1,7 @@
 MetaBoxesHandler
 ================
 
-![Build Status](https://img.shields.io/badge/build-v0.20-green.svg?style=flat)
+![Build Status](https://img.shields.io/badge/build-v0.21-green.svg?style=flat)
 
 È un utility per Wordpress per la gestione automatizzata di metabox da utilizzare con un custom post type, sia lato backend che frontend.
 
@@ -23,14 +23,19 @@ Crediti
 |Tipo|Descrizione|
 |:---|---:|
 |@autore|Giorgio Suadoni|
-|@versione|0.20|
-|@data ultimo aggiornamento|20 Giugno 2017|
+|@versione|0.21|
+|@data ultimo aggiornamento|27 Giugno 2017|
 |@data prima versione|20 Maggio 2017|
 
 
 
 Changelog
 ---------
+
+#### v0.21 - 27 Giugno 2017
+* Ora il metodo 'returnAllMeta()' è richiamabile anche lato backend
+* Aggiunto nuovo metodo 'getMetaKey($namePostMeta = false)', che ritorna l'esatta metakey salvata sul DB. Se non viene passato nessun valore, ritorneranno tutti i metakey.
+* Modificato il parametro 'required'. Ora è possibile passargli una funzione anonima per il controllo personalizzato del campo. In caso di errore, deve ritornare il messaggio da stampare.
 
 #### v0.20 - 20 Giugno 2017
 * Aggiunto nuovo campo input radio (è possibile inserire più radio in un unico campo)
