@@ -1,10 +1,13 @@
 ﻿Changelog
 =========
 
+#### v0.22 - 28 Giugno 2017
+* Aggiunta la revisione sui custom fields
+
 #### v0.21 - 27 Giugno 2017
 * Ora il metodo 'returnAllMeta()' è richiamabile anche lato backend
-* Aggiunto nuovo metodo 'getMetaKey($namePostMeta = false)', che ritorna l'esatta metakey salvata sul DB. Se non viene passato nessun valore, ritorneranno tutti i metakey.
-* Modificato il parametro 'required'. Ora è possibile passargli una funzione anonima per il controllo personalizzato del campo. In caso di errore, deve ritornare il messaggio da stampare.
+* Aggiunto nuovo metodo 'getMetaKey($namePostMeta = false)', che ritorna l'esatta metakey salvata sul DB. Se non viene passato nessun valore, ritorneranno tutti i metakey
+* Modificato il parametro 'required'. Ora è possibile passargli una funzione anonima per il controllo personalizzato del campo. In caso di errore, deve ritornare il messaggio da stampare
 
 #### v0.20 - 20 Giugno 2017
 * Aggiunto nuovo campo input radio (è possibile inserire più radio in un unico campo)
@@ -25,7 +28,7 @@
 #### v0.18 - 7 Giugno 2017
 * Classe rinominata in 'MetaBoxesHandler'
 * Novità: i metabox verranno creati automaticamente dalla classe con il metodo 'add()'
-* Cambiato il nome del metodo 'addMetaFields()' in 'add()'. Quando verrà lanciato creerà direttamente il metabox con la lista dei campi richiesti.
+* Cambiato il nome del metodo 'addMetaFields()' in 'add()'. Quando verrà lanciato creerà direttamente il metabox con la lista dei campi richiesti
 * Il metodo 'returnAllMeta()' ora funzionerà soltanto lato frontend. Nel backend non occorrerà più utilizzarlo
 * Riscritti alcuni metodi per un utilizzo migliore della classe
 * Risolto un problema nello script JS della classe

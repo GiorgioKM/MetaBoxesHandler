@@ -74,7 +74,7 @@ abstract class BaseMBH {
 	/**
 	 * Costruttore.
 	 *
-	 * @aggiornamento v0.14
+	 * @aggiornamento v0.22 Integrazione con le revisioni
 	 * @dalla v0.1
 	 *
 	 * @accesso pubblico
@@ -83,11 +83,135 @@ abstract class BaseMBH {
 		$this->_setLang($lang);
 		
 		$this->adminNotes = new adminNotes;
+		
+		if (is_admin()) {
+			add_action('wp_print_scripts', function() {
+				wp_deregister_script('autosave');
+			});
+			
+			add_filter('_wp_post_revision_fields', array($this, 'wp_post_revision_fields'));
+			add_action('wp_restore_post_revision', array($this, 'wp_restore_post_revision'), 10, 2);
+		}
+	}
+	
+	/*
+	 * Richiamato da 'add_filter'. Metodo che rimpiazza quello predefinito di wordpress.
+	 *
+	 * Determina quali campi di post devono essere salvati nelle revisioni.
+	 *
+	 * @dalla v0.22
+	 *
+	 * @accesso pubblico
+	 */	
+	public function wp_post_revision_fields($returnPost) {
+		global $post, $pagenow;
+		
+		$allowed = false;
+		
+		if ($pagenow == 'admin-ajax.php' && isset($_POST['action']) && $_POST['action'] == 'get-revision-diffs')
+			$post_type = get_post_type($_POST['post_id']);
+		else
+			$post_type = $post->post_type;
+		
+		if ($post_type != $this->postType)
+			return $returnPost;
+		
+		$allMetaKey = $this->_processFieldSettings(function($settings, $args) {
+			$postMetas = $settings['name'];
+			
+			if (!is_array($postMetas)) {
+				$tmp = $postMetas;
+				
+				$postMetas = array();
+				
+				$postMetas[] = $tmp;
+			}
+			
+			foreach ($postMetas as $namePostMeta) {
+				$args[$namePostMeta] = $settings['label'];
+				
+				add_filter('_wp_post_revision_field_'. $namePostMeta, array($this, 'wp_post_revision_field'), 10, 3);
+			}
+			
+			return $args;
+		});
+		
+		$returnPost = array_merge($returnPost, $allMetaKey);
+		
+		return $returnPost;
+	}
+	
+	/*
+	 * Richiamato da 'add_filter'. Metodo che rimpiazza quello predefinito di wordpress.
+	 *
+	 * Questo filtro caricherà il valore per il campo specificato e lo restituisce per il rendering
+	 *
+	 * @dalla v0.22
+	 *
+	 * @accesso pubblico
+	 */
+	public function wp_post_revision_field($value, $fieldName, $postObj = null) {
+		global $revision, $post;
+		
+		$meta = get_metadata('post', $postObj->ID, $this->postType, true);
+		
+		return (isset($meta[$fieldName]) ? $meta[$fieldName] : '');
+	}
+	
+	/*
+	 * Richiamato da 'add_filter'. Metodo che rimpiazza quello predefinito di wordpress.
+	 *
+	 * Ripristina un post alla revisione specificata.
+	 *
+	 * @dalla v0.22
+	 *
+	 * @accesso pubblico
+	 */
+	public function wp_restore_post_revision($post_id, $revision_id) {
+		global $post;
+		
+		if ($post->post_type != $this->postType)
+			return;
+		
+		$revision = get_post($revision_id);
+		
+		$metaLoad = get_metadata('post', $revision->ID, $this->postType, true);
+		
+		$args = $this->_processFieldSettings(function($settings, $args) use ($metaLoad) {
+			$postMetas = $settings['name'];
+			
+			if (!is_array($postMetas)) {
+				$tmp = $postMetas;
+				
+				$postMetas = array();
+				
+				$postMetas[] = $tmp;
+			}
+			
+			foreach ($postMetas as $namePostMeta) {
+				if (!isset($settings['save-unique']) || isset($settings['save-unique']) && !$settings['save-unique'])
+					$args['metaSave'][$namePostMeta] = (isset($metaLoad[$namePostMeta]) ? $metaLoad[$namePostMeta] : '');
+				else {
+					$singleMetaLoad = get_metadata('post', $revision->ID, $this->postType .'_'. $namePostMeta .'_single', true);
+					
+					if (false !== $singleMetaLoad)
+						update_post_meta($post_id, $this->postType .'_'. $namePostMeta .'_single', $singleMetaLoad);
+					else
+						delete_post_meta($post_id, $this->postType .'_'. $namePostMeta .'_single');
+				}
+			}
+			
+			return $args;
+		});
+		
+		if (is_array($args['metaSave']) && count($args['metaSave']))
+			update_post_meta($post_id, $this->postType, $args['metaSave']);
 	}
 	
 	/**
 	 * Richiama questo metodo quando viene aggiunta l'azione di salvataggio del post.
 	 *
+	 * @aggiornamento v0.22 Integrazione con le revisioni
 	 * @dalla v0.18
 	 *
 	 * @accesso   pubblico
@@ -98,7 +222,31 @@ abstract class BaseMBH {
 		
 		if ($post->post_type != $this->postType || in_array($_GET['action'], array('trash', 'untrash')))
 			return;
-	
+		
+		if ($_GET['action'] == 'restore') {
+			if ($parent_id = wp_is_post_revision($post_id)) {
+				$parent = get_post($parent_id);
+				
+				if ($parent->post_type == $this->postType) {
+					$meta = get_post_meta($parent->ID, $this->postType, true);
+					$allMetaKey = $this->_getMetaKeyFromNamePostMeta();
+					
+					foreach ($allMetaKey as $k => $v) {
+						if (!in_array($k, array_keys($meta)))
+							$meta[$k] = get_post_meta($parent->ID, $v, true);
+					}
+					
+					if (false !== $meta)
+						add_metadata('post', $post_id, $this->postType, $meta);
+					
+					return;
+				}
+				
+			}
+			
+			return;
+		}
+		
 		$__POST = array_map('stripslashes_deep', $_POST);
 		
 		if ($fieldRequired = $this->_checkRequiredFieldsInPOST($__POST))
@@ -148,6 +296,26 @@ abstract class BaseMBH {
 			
 			if (is_array($args['metaSave']) && count($args['metaSave']))
 				update_post_meta($post->ID, $this->postType, $args['metaSave']);
+		}
+		
+		if ($parent_id = wp_is_post_revision($post_id)) {
+			$parent = get_post($parent_id);
+			
+			if ($parent->post_type == $this->postType) {
+				$meta = get_post_meta($parent->ID, $this->postType, true);
+				$allMetaKey = $this->_getMetaKeyFromNamePostMeta();
+				
+				foreach ($allMetaKey as $k => $v) {
+					if (!in_array($k, array_keys($meta)))
+						$meta[$k] = get_post_meta($parent->ID, $v, true);
+				}
+				
+				if (false !== $meta)
+					add_metadata('post', $post_id, $this->postType, $meta);
+				
+				return;
+			}
+			
 		}
 	}
 	
