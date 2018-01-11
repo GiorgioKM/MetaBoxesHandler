@@ -32,6 +32,9 @@ Crediti
 Changelog
 ---------
 
+#### v0.22.1 - 11 Gennaio 2018
+* Sistemato un problema con il metodo 'returnAllMeta()'
+
 #### v0.22 - 28 Giugno 2017
 * Aggiunta la revisione sui custom fields
 

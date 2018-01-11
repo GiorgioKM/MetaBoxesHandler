@@ -354,7 +354,7 @@ abstract class BaseMBH {
 	 * @ritorno   array
 	 */
 	protected function _getPostMetaAsArrays($includeAllPosts = false) {
-		global $post;
+		global $post, $query;
 		
 		$this->_generalCheck();
 		
@@ -379,6 +379,12 @@ abstract class BaseMBH {
 		};
 		
 		if (!$post || get_post_type($post) != $this->postType || $includeAllPosts) {
+			add_action('pre_get_posts', function ($query) {
+				$query->set('posts_per_page', -1);
+				
+				return $query;
+			}, 0);
+			
 			$args = array(
 				'posts_per_page'   => -1,
 				'orderby'          => 'date',
