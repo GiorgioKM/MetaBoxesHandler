@@ -1,7 +1,7 @@
 MetaBoxesHandler
 ================
 
-![Build Status](https://img.shields.io/badge/build-v0.22-green.svg?style=flat)
+![Build Status](https://img.shields.io/badge/build-v0.22.1-green.svg?style=flat)
 
 È un utility per Wordpress per la gestione automatizzata di metabox da utilizzare con un custom post type, sia lato backend che frontend.
 
@@ -23,8 +23,8 @@ Crediti
 |Tipo|Descrizione|
 |:---|---:|
 |@autore|Giorgio Suadoni|
-|@versione|0.22|
-|@data ultimo aggiornamento|28 Giugno 2017|
+|@versione|0.22.1|
+|@data ultimo aggiornamento|11 Gennaio 2018|
 |@data prima versione|20 Maggio 2017|
 
 
