@@ -1,3 +1,6 @@
 .gitattributes export-ignore
 _config.yml export-ignore
 CNAME export-ignore
+dist/*.php linguist-language=PHP
+dist/*.js linguist-language=JavaScript
+dist/*.css linguist-language=CSS
