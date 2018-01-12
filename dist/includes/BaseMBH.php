@@ -319,7 +319,6 @@ abstract class BaseMBH {
 		}
 	}
 	
-	
 	/*################################################################################*/
 	/*## METODI PROTETTI                                                            ##*/
 	/*################################################################################*/
@@ -354,7 +353,7 @@ abstract class BaseMBH {
 	 * @ritorno   array
 	 */
 	protected function _getPostMetaAsArrays($includeAllPosts = false) {
-		global $post, $query;
+		global $post;
 		
 		$this->_generalCheck();
 		
@@ -379,18 +378,13 @@ abstract class BaseMBH {
 		};
 		
 		if (!$post || get_post_type($post) != $this->postType || $includeAllPosts) {
-			add_action('pre_get_posts', function ($query) {
-				$query->set('posts_per_page', -1);
-				
-				return $query;
-			}, 0);
-			
 			$args = array(
 				'posts_per_page'   => -1,
 				'orderby'          => 'date',
 				'order'            => 'DESC',
 				'post_type'        => $this->postType,
 				'post_status'      => 'publish',
+				'suppress_filters' => true,
 			);
 			
 			$getPosts = get_posts($args);

@@ -1,6 +1,9 @@
 ﻿Changelog
 =========
 
+#### v0.22.2 - 12 Gennaio 2018
+* Aggiunto argomento 'suppress_filters => true' quando viene richiamato il metodo 'get_posts'
+
 #### v0.22.1 - 11 Gennaio 2018
 * Sistemato un problema con il metodo 'returnAllMeta()'
 
