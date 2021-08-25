@@ -113,26 +113,28 @@ class MetaBoxesHandler extends BaseMBH {
 	public function __construct($lang = false) {
 		parent::__construct($lang);
 		
-		if (!wp_script_is('mbh-base')) {
-			wp_enqueue_script('mbh-base', BASE_MBH_URI .'/js/mbh-base.js', array('jquery'), filemtime(BASE_MBH .'/js/mbh-base.js'), true);
-			wp_localize_script('mbh-base', 'mbh_vars', array(
-				'save_confirm_delete' => parent::_getTranslate('save_confirm_delete'),
-				'save_confirm_mod' => parent::_getTranslate('save_confirm_mod'),
-				'select_media_image' => parent::_getTranslate('select_media_image'),
-				'use_this_image' => parent::_getTranslate('use_this_image'),
-				'change_image' => parent::_getTranslate('change_image'),
-				'set_image' => parent::_getTranslate('set_image'),
-			));
-		}
-		
-		if (!wp_script_is('wp-upload-image'))
-			wp_register_script('wp-upload-image', BASE_MBH_URI .'/js/wp-upload-image.js', array('jquery'), filemtime(BASE_MBH .'/js/wp-upload-image.js'), true);
-		
-		if (!wp_script_is('custom-attachment'))
-			wp_register_script('custom-attachment', BASE_MBH_URI .'/js/custom-attachment.js', array('jquery'), filemtime(BASE_MBH .'/js/custom-attachment.js'), true);
-		
-		if (!wp_script_is('mbh-style'))
-			wp_enqueue_style('mbh-style', BASE_MBH_URI .'/css/mbh-style.css', null, filemtime(BASE_MBH .'/css/mbh-style.css'));
+		add_action('admin_enqueue_scripts', function() {
+			if (!wp_script_is('mbh-base')) {
+				wp_enqueue_script('mbh-base', BASE_MBH_URI .'/js/mbh-base.js', array('jquery'), filemtime(BASE_MBH .'/js/mbh-base.js'), true);
+				wp_localize_script('mbh-base', 'mbh_vars', array(
+					'save_confirm_delete' => parent::_getTranslate('save_confirm_delete'),
+					'save_confirm_mod' => parent::_getTranslate('save_confirm_mod'),
+					'select_media_image' => parent::_getTranslate('select_media_image'),
+					'use_this_image' => parent::_getTranslate('use_this_image'),
+					'change_image' => parent::_getTranslate('change_image'),
+					'set_image' => parent::_getTranslate('set_image'),
+				));
+			}
+			
+			if (!wp_script_is('wp-upload-image'))
+				wp_enqueue_script('wp-upload-image', BASE_MBH_URI .'/js/wp-upload-image.js', array('jquery'), filemtime(BASE_MBH .'/js/wp-upload-image.js'), true);
+			
+			if (!wp_script_is('custom-attachment'))
+				wp_enqueue_script('custom-attachment', BASE_MBH_URI .'/js/custom-attachment.js', array('jquery'), filemtime(BASE_MBH .'/js/custom-attachment.js'), true);
+			
+			if (!wp_script_is('mbh-style'))
+				wp_enqueue_style('mbh-style', BASE_MBH_URI .'/css/mbh-style.css', null, filemtime(BASE_MBH .'/css/mbh-style.css'));
+		});
 	}
 	
 	/**
