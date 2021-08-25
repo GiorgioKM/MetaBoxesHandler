@@ -1,6 +1,9 @@
 ﻿Changelog
 =========
 
+#### v0.22.3 - 25 Agosto 2021
+* Risolto un piccolo bug di caricamento degli script/style
+
 #### v0.22.2 - 12 Gennaio 2018
 * Aggiunto argomento 'suppress_filters => true' quando viene richiamato il metodo 'get_posts'
 
